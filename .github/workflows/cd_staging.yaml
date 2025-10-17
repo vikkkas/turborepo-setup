@@ -13,7 +13,7 @@ jobs:
       - run: |
             mkdir -p ~/.ssh
             chmod 700 ~/.ssh
-            echo "${{ secrets.SSH_KEY_MY_DROP }}" > ~/.ssh/id_ed25519
+            printf "%s\n" "${{ secrets.SSH_KEY_MY_DROP }}" > ~/.ssh/id_ed25519
             chmod 600 ~/.ssh/id_ed25519
             ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/id_ed25519 root@128.199.25.103 << 'EOF'
               cd /root/turborepo-setup
