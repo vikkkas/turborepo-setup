@@ -12,11 +12,14 @@ jobs:
     steps:
       - run: |
             mkdir -p ~/.ssh
-            echo "${{ secrets.SSH_KEY_MY_DROP }}" &> ~/.ssh/id_ed25519
-            chmod 700 ~/.ssh/id_ed25519
-            ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519 root@128.199.25.103 << 'EOF'
+            chmod 700 ~/.ssh
+            echo "${{ secrets.SSH_KEY_MY_DROP }}" > ~/.ssh/id_ed25519
+            chmod 600 ~/.ssh/id_ed25519
+            ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/id_ed25519 root@128.199.25.103 << 'EOF'
               cd /root/turborepo-setup
+              git pull origin main
               pnpm install
               pnpm run build
               pm2 restart backend-dummy
+              pm2 restart frontend-dummy
             EOF
